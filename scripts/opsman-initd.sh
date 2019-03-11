@@ -27,6 +27,9 @@ HEAD_BASE_PORT=27500
 QUERYABLE_FS_PORT=8087
 QUERYABLE_BASE_PORT=27700
 
+# Make default ram req small!
+JAVA_MMS_UI_OPTS=${JAVA_MMS_UI_OPTS/Xms4352m/Xmx1m}
+
 [[ -f "${SYSCONFIG}" ]] && . "${SYSCONFIG}"
 
 ensureKey() {
@@ -120,6 +123,9 @@ start() {
         "-XX:-OmitStackTraceInFastThrow"
         "-classpath ${APP_DIR}/classes/mms.jar:${APP_DIR}/agent:${APP_DIR}/agent/backup:${APP_DIR}/agent/monitoring:${APP_DIR}/agent/automation:${APP_DIR}/agent/biconnector:${APP_DIR}/data/unit:${APP_DIR}/conf/:${APP_DIR}/lib/*"
     )
+    JAVA_MMS_UI_OPTS=${JAVA_MMS_UI_OPTS/Xms4352m/Xms1m}
+    JAVA_MMS_UI_OPTS=${JAVA_MMS_UI_OPTS/XX:NewSize=600m/XX:NewSize=100m}
+    JAVA_MMS_UI_OPTS=${JAVA_MMS_UI_OPTS/Xmn1500m/Xmn50m}
     local jvm_opts=$( build_opts "${JAVA_MMS_UI_OPTS}" opts_array[@] )
     local idx="0"
     local log_file_base="${LOG_PATH}/${APP_ID}${idx}"

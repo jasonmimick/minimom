@@ -10,6 +10,7 @@ AWS_IMAGE_HOST = 268558157000.dkr.ecr.us-east-1.amazonaws.com
 AWS_IMAGE_REPO = dev
 AWS_REGION = us-east-1
 OM_DOWNLOAD_LOCATION = https://downloads.mongodb.com/on-prem-mms/deb
+#OM_DOWNLOAD_LOCATION = https://downloads.mongodb.com/on-prem-mms/tar
 MDB_DOWNLOAD_LOCATION = https://fastdl.mongodb.org/linux
 CONTAINER="ops-manager"
 
@@ -51,10 +52,11 @@ cache_server:
 build_cached:
 	@ echo "Building using cached MMS and Mongodb"
 	$(MAKE) build OM_DOWNLOAD_LOCATION=http://localhost:8000/cache MDB_DOWNLOAD_LOCATION=http://localhost:8000/cache
+	#docker build $(EXTRA_PARAM) --add-host="localhost:$(DOCKER_HOST_IP)" \
 
 build:
 	$(eval DOCKER_HOST_IP := $(shell scripts/get-local-ip.sh))
-	docker build $(EXTRA_PARAM) --add-host="localhost:$(DOCKER_HOST_IP)" \
+	docker build $(EXTRA_PARAM) \
 		-t $(IMAGE):$(IMAGE_VERSION)$(IMAGE_REVISION) \
 		--build-arg MONGODB_VERSION=$(MONGODB_VERSION) \
 		--build-arg OPS_MANAGER_VERSION=$(OPS_MANAGER_VERSION) \

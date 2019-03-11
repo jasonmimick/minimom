@@ -27,7 +27,7 @@ mkdir -p "${log_dir}"
 
 # Start AppDB
 echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Starting AppDB..."
-"${mongodb}/mongod" --port 27017 --dbpath /data/appdb  --logpath "${log_dir}/mongod-appdb.log"  --wiredTigerCacheSizeGB 0.5 --fork
+"${mongodb}/mongod" --port 27017 --dbpath /data/appdb  --logpath "${log_dir}/mongod-appdb.log"  --wiredTigerCacheSizeGB 0.1 --fork
 
 # Start BackupDB
 # echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Starting BackupDB..."
