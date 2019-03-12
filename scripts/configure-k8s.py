@@ -25,7 +25,7 @@ with open(template_file, 'r') as t:
   template = t.read()
   t = Template( template )
   rendered_template = t.render(parameters)
-  print rendered_template
+  print(rendered_template)
 
 
 
