@@ -53,7 +53,7 @@ if [ ! -z "${OM_HOST}" ] &&  [ -z "${SKIP_OPS_MANAGER_REGISTRATION}" ]; then
     # wait a few seconds for Ops Manager to be ready to handle http connections
     sleep 20
     echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Configuring Ops Manager / registering a Global Owner..."
-    . /opt/venv/bin/activate
+    #. /opt/venv/bin/activate
     # if we fail here it might be because we already initialized this image, no need to do it again.
     # Also, make sure the ".ops-manager-env" file resides in a directory that is restored after a restart of the Pod
     # like a PersistentVolume, or this file won't be found
@@ -66,6 +66,7 @@ if [ ! -z "${OM_HOST}" ] &&  [ -z "${SKIP_OPS_MANAGER_REGISTRATION}" ]; then
     echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Credentials to be stored in ${OM_ENV_FILE}"
     echo "OM_HOST=${OM_HOST}"
     /opt/scripts/configure-ops-manager.py "http://${OM_HOST}:${OM_PORT}" "${OM_ENV_FILE}" || true
+    /opt/scripts/configure-k8s.py > "${OM_ENV_FILE_PATH}/minimom.yaml" || true
     # keep going if a user has registered already, we'll assume it is us.
 fi
 echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Ops Manager ready..."

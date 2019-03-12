@@ -1,0 +1,86 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minimom
+  namespace: mongodb
+type: Opaque
+stringData:
+  username: admin
+  password: minimom12345%
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ops-manager
+  namespace: mongodb
+spec:
+  type: NodePort
+  selector:
+    app: minimom
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: minimom
+  name: minimom
+  namespace: mongodb
+spec:
+  replicas: 1
+  serviceName: ops-manager
+  selector:
+    matchLabels:
+      app: minimom
+  template:
+    metadata:
+      labels:
+        app: minimom
+    spec:
+      containers:
+      - name: minimom
+        image: jmimick/minimom
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /
+          initialDelaySeconds: 600
+          timeoutSeconds: 10
+        env:
+        - name: OM_HOST
+          value: minimom.mongodb.svc.cluster.local
+        volumeMounts:
+        - name: mongodb-mms-data
+          mountPath: /data
+        - name: mongodb-mms-config
+          mountPath: /etc/mongodb-mms
+        - name: mongodb-mms-global-admin
+          mountPath: /etc/mongodb-mms/global-admin
+          readOnly: true
+        volumes:
+        - name: mongodb-mms-global-admin
+          secret:
+            secretName: minimom
+        resources:
+          requests:
+            memory: "4Gi"
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-mms-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
+  - metadata:
+      name: mongodb-mms-config
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi

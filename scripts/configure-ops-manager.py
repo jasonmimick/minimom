@@ -59,7 +59,7 @@ if __name__ == '__main__':
       with open( ("%s/password" % config_path), 'r') as secret:
         password = secret.read()
     else:
-      print("Did not detect Kubernetes cluster. Running with default 'test/test' credentials")
+      print("Did not detect Kubernetes cluster. Running with default credentials")
       username = DEFAULT_ADMIN
       password = DEFAULT_PASS
 
