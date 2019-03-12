@@ -66,6 +66,7 @@ if [ ! -z "${OM_HOST}" ] &&  [ -z "${SKIP_OPS_MANAGER_REGISTRATION}" ]; then
     echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Credentials to be stored in ${OM_ENV_FILE}"
     echo "OM_HOST=${OM_HOST}"
     /opt/scripts/configure-ops-manager.py "http://${OM_HOST}:${OM_PORT}" "${OM_ENV_FILE}" || true
+    . /etc/mongodb/mms/env/.ops-manager-env
     /opt/scripts/configure-k8s.py > "${OM_ENV_FILE_PATH}/minimom.yaml" || true
     # keep going if a user has registered already, we'll assume it is us.
 fi
