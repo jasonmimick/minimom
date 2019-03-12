@@ -114,10 +114,10 @@ if __name__ == '__main__':
 
         # Also print them for immediate usage
         print()
-        print('Ops Manager was configured and the environment was saved at: {}'.format(filename))
+        print('minimom was configured and the environment was saved at: {}'.format(filename))
         print('You can import it with:')
-        print('eval \"$(docker exec ops_manager cat {})\" # Docker'.format(filename))
-        print('eval \"$(kubectl -n mongodb exec mongodb-enterprise-ops-manager-0 cat {})\" # Kubernetes'.format(filename))
+        print('eval \"$(docker exec minimom cat {})\" # Docker'.format(filename))
+        print('eval \"$(kubectl -n mongodb exec minimom-0 cat {})\" # Kubernetes'.format(filename))
         print()
-        print('DON\'T FORGET TO CHANGE THE DEFAULT PASSWORD AND ROTATE THE PUBLIC API KEY, IF RUNNING IN A PRODUCTION ENVIRONMENT!')
+        print('DON\'T FORGET TO CHANGE THE DEFAULT PASSWORD AND ROTATE THE PUBLIC API KEY, IF RUNNING IN A PRODUCTION ENVIRONMENT! AND NEVER EVER RUN THIS SOFTWARE IN PRODUCTION!')
         print()
