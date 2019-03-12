@@ -18,7 +18,7 @@ for key in keys:
 if sys.argv[1]:
   template_file=sys.argv[1]
 else :
-  path="/etc/mongodb/mms/env/.ops-manager-env"
+  path="/etc/mongodb/mms/env"
   template_file="%s/k8s_config_template.yaml" % path
 
 with open(template_file, 'r') as t:
