@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+function __is_pod_ready() {
+  [[ "$(kubectl get po "$1" -o 'jsonpath={.status.conditions[?(@.type=="Ready")].status}')" == 'True' ]]
+}
+
 NSF="-n mongodb"
 
 echo "Welcome to minimom! 🤩" 
@@ -12,9 +17,16 @@ kubectl create ${NFS} -f https://raw.githubusercontent.com/mongodb/mongodb-enter
 
 # wait till pod started and ready
 echo "Waiting for minimom to be ready..."
+while not __is_pod_ready minimom-0:
+do
+  sleep 1
+  echo "wait for pod ready"
+done
+
+sleep 5
 tlog=$(mktemp)
 kubectl ${NFS} logs minimom-0 > ${tlog}
-while not grep "minimom> READY" ${tlog} > /dev/null:
+while not grep "minimom> READY" ${tlog}:
 do
   sleep 1
   echo "."
