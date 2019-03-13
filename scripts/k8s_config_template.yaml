@@ -5,7 +5,8 @@ metadata:
   name: minimom
 data:
   projectName: minimom
-  baseUrl: {{ OM_HOST }}
+  #baseUrl: {{ OM_HOST }}
+  baseUrl: http://minimom:8080
 ---
 apiVersion: v1
 kind: Secret

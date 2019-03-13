@@ -12,10 +12,13 @@ kubectl create ${NFS} -f https://raw.githubusercontent.com/mongodb/mongodb-enter
 
 # wait till pod started and ready
 echo "Waiting for minimom to be ready..."
-while not grep "minimom> READY" <<< $(kubectl ${NFS} logs minimom-0) > /dev/null:
+tlog=$(mktemp)
+kubectl ${NFS} logs minimom-0 > ${tlog}
+while not grep "minimom> READY" ${tlog} > /dev/null:
 do
   sleep 1
   echo "."
+  kubectl ${NFS} logs minimom-0 > ${tlog}
 done
 echo "minimom is almost ready!"
 
