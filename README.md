@@ -1,2 +1,2 @@
 # minimom
-Welcome to minimom! 🤩" 
+Welcome to minimom! 🤩
