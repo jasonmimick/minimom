@@ -76,6 +76,8 @@ echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Pausing, for a brief station identific
 sleep 2
 echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: This is WMDB, your station for more automation!"
 
+echo "minimom> READY"
+
 # Tail all Ops Manager and MongoD log files
 #tail -F "${log_dir}/mms0.log" "${log_dir}/mms0-startup.log" "${log_dir}/daemon.log" "${log_dir}/daemon-startup.log" "${log_dir}/mongod-appdb.log" "${log_dir}/mongod-backup.log"
 #tail -f "${log_dir}/*.log" "/opt/mongodb/mms/logs/*.log"

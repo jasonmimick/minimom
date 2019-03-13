@@ -63,6 +63,7 @@ if __name__ == '__main__':
       username = DEFAULT_ADMIN
       password = DEFAULT_PASS
 
+    print("minimom global admin> username:%s password:%s" % (username,password))
     # Retrieve arguments
     args = docopt.docopt(__doc__)
     url = args['OPS_MANAGER_HOST'].rstrip('/')
@@ -101,7 +102,7 @@ if __name__ == '__main__':
 
     # Retrieve API key
     api_key = user_data['apiKey']
-
+    print("minimom> api_key:%s" % api_key)
     # Store env variables
     with open(args['ENV_FILE'], 'w') as f:
         om_user = 'export OM_USER={}'.format(username)
