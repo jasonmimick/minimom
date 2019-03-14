@@ -15,22 +15,21 @@ kubectl create ${NFS} -f https://raw.githubusercontent.com/jasonmimick/minimom/m
 kubectl create ${NSF} -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/crds.yaml
 kubectl create ${NFS} -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/mongodb-enterprise.yaml
 
-# wait till pod started and ready
-echo "Waiting for minimom to be ready..."
-while ! __is_pod_ready minimom-0:
-do
-  sleep 1
-  echo "wait for pod ready"
-done
+echo "Checking pod/minimom-0 Ready."
+kubectl wait --for=condition=Ready pod/minimom-0 --timeout=-1s
+echo "Pod ready."
 
-sleep 5
 tlog=$(mktemp)
 kubectl ${NFS} logs minimom-0 > ${tlog}
-while not grep "minimom> READY" ${tlog}:
+logdata=$(grep 'minimom> READY' ${tlog})
+echo "logdata=${logdata}"
+while [ -z ${logdata}];
 do
   sleep 1
   echo "."
   kubectl ${NFS} logs minimom-0 > ${tlog}
+  logdata=$(grep "minimom> READY" ${tlog})
+  echo "logdata=${logdata}"
 done
 echo "minimom is almost ready!"
 
