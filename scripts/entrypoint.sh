@@ -36,10 +36,14 @@ echo "[$(date -u +'%Y-%m-%dT%H:%M:%SZ')]: Starting AppDB..."
 # Generate the AppDB encryption key (first run only)
 
 # Replace mms.centralUrl in mms_prop_file (if the OM_HOST environment variable is set)
+echo "About to --clean opsman-cental-url.sh mms_prop_file=${mms_prop_file}"
 /opt/scripts/opsman-central-url.sh --clean "${mms_prop_file}"
+echo "OM_HOST=${OM_HOST}"
 if [ ! -z "${OM_HOST}" ]; then
     /opt/scripts/opsman-central-url.sh --set "${mms_prop_file}" "http://${OM_HOST}:${OM_PORT}"
 fi
+echo "cat ${mms_prop_file}"
+cat ${mms_prop_file}
 
 # Run Preflight checks
 # Run Migrations
