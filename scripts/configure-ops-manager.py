@@ -93,13 +93,25 @@ if __name__ == '__main__':
     else:
        print(" %s did not exist!" % filename)
     # Create first user (global owner)
-    user_data = post(url + "/api/public/v1.0/unauth/users?whitelist=0.0.0.0%2F0", {
-        "username": username,
-        "password": password,
-        "firstName": "Admin",
-        "lastName": "Admin"
-    })
-
+    try:
+      user_data = post(url + "/api/public/v1.0/unauth/users?whitelist=0.0.0.0%2F0", {
+          "username": username,
+          "password": password,
+          "firstName": "Admin",
+          "lastName": "Admin"
+      })
+    except Exception as error:
+      print("minimom> error posting to url=%s" % url)
+      print("minimom> error: %s" % error)
+      xurl = "http://localhost:8080"    # default
+      print("minimom> trying: %s" % xurl)
+      user_data = post(xurl + "/api/public/v1.0/unauth/users?whitelist=0.0.0.0%2F0", {
+          "username": username,
+          "password": password,
+          "firstName": "Admin",
+          "lastName": "Admin"
+      })
+       
     # Retrieve API key
     api_key = user_data['apiKey']
     print("minimom> api_key:%s" % api_key)
