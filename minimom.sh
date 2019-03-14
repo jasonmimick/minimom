@@ -17,7 +17,7 @@ kubectl create ${NFS} -f https://raw.githubusercontent.com/mongodb/mongodb-enter
 
 # wait till pod started and ready
 echo "Waiting for minimom to be ready..."
-while not __is_pod_ready minimom-0:
+while ! __is_pod_ready minimom-0:
 do
   sleep 1
   echo "wait for pod ready"
