@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minimom
+data:
+  projectName: minimom
+  baseUrl: http://minimom-0.minimom.mongodb.svc.cluster.local:8080
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minimom
+type: Opaque
+stringData:
+  user: admin
+  publicApiKey: 5ab9336c-e441-4157-9bef-e05fa266fe7a
