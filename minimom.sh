@@ -1,33 +1,36 @@
 #!/bin/bash
 
-
+set -x
 function __is_pod_ready() {
   [[ "$(kubectl get po "$1" -o 'jsonpath={.status.conditions[?(@.type=="Ready")].status}')" == 'True' ]]
 }
 
-NSF="-n mongodb"
+NS="mongodb"
 
 echo "Welcome to minimom! 🤩" 
-kubectl create ${NFS} ns mongodb
+kubectl -n "${NS}" create ns mongodb
 
-kubectl create ${NFS} -f https://raw.githubusercontent.com/jasonmimick/minimom/master/minimom.yaml 
+kubectl -n "${NS}" create -f minimom.yaml 
+#kubectl -n "${NS}" create -f https://raw.githubusercontent.com/jasonmimick/minimom/master/minimom.yaml 
 
-kubectl create ${NSF} -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/crds.yaml
-kubectl create ${NFS} -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/mongodb-enterprise.yaml
+kubectl -n "${NS}" create -f ./.crds.yaml
+kubectl -n "${NS}" create -f ./.mongodb-enterprise.yaml 
+#kubectl -n "${NS}" create -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/crds.yaml
+#kubectl -n "${NS}" create -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/mongodb-enterprise.yaml
 
 echo "Checking pod/minimom-0 Ready."
-kubectl wait --for=condition=Ready pod/minimom-0 --timeout=-1s
+kubectl -n "${NS}" wait --for=condition=Ready --timeout=-1s pod/minimom-0 
 echo "Pod ready."
 
 tlog=$(mktemp)
-kubectl ${NFS} logs minimom-0 > ${tlog}
+kubectl -n "${NS}" logs minimom-0 > ${tlog}
 logdata=$(grep 'minimom> READY' ${tlog})
 echo "logdata=${logdata}"
 while [ -z ${logdata}];
 do
   sleep 1
   echo "."
-  kubectl ${NFS} logs minimom-0 > ${tlog}
+  kubectl -n "${NS}" logs minimom-0 > ${tlog}
   logdata=$(grep "minimom> READY" ${tlog})
   echo "logdata=${logdata}"
 done
@@ -35,10 +38,10 @@ echo "minimom is almost ready!"
 
 #fetch configmap and secret yaml already built
 echo "Installing ConfigMap and Secret for operator-to-ops-manager connection..."
-kubectl ${NFS} exec minimom-0 -- cat /etc/mongodb/mms/env/minimom.yaml | kubectl create -f -
+kubectl -n "${NS}" exec minimom-0 -- cat /etc/mongodb/mms/env/minimom.yaml | kubectl create -f -
 echo "Complete."
 
-kubectl get ${NFS} cm,secrets
-kubectl get ${NFS} all
+kubectl -n "${NS}" get cm,secrets
+kubectl -n "${NS}" get all
 
 echo "minimom is ready! start building cloud data services today!"
