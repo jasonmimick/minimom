@@ -4,6 +4,6 @@ kubectl delete -f https://raw.githubusercontent.com/jasonmimick/minimom/master/m
 
 kubectl delete -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/crds.yaml
 kubectl delete -f https://raw.githubusercontent.com/mongodb/mongodb-enterprise-kubernetes/master/mongodb-enterprise.yaml
-kubectl delete ns mongodb
+#kubectl delete ns mongodb
 
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 function __is_pod_ready() {
   [[ "$(kubectl get po "$1" -o 'jsonpath={.status.conditions[?(@.type=="Ready")].status}')" == 'True' ]]
 }
@@ -26,7 +26,7 @@ tlog=$(mktemp)
 kubectl -n "${NS}" logs minimom-0 > ${tlog}
 logdata=$(grep 'minimom> READY' ${tlog})
 echo "logdata=${logdata}"
-while [ -z ${logdata}];
+while [ -z ${logdata} ];
 do
   sleep 1
   echo "."

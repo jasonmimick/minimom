@@ -48,7 +48,7 @@ spec:
         readinessProbe:
           httpGet:
             port: 8080
-            path: /
+            path: /login
           initialDelaySeconds: 600
           timeoutSeconds: 10
         env:
